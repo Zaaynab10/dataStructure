@@ -1,0 +1,141 @@
+ALGORITHM sumOperation 
+VAR
+//stack for arranging users' value (first array )
+ qu1:STACK; 
+ //stack for arranging users' value (second array )
+ qu2:STACK;
+ // Stack for storing qu1's datas (beginning at the end of qu1 ) ; 
+ qu3:STACK;
+  // Stack for storing datas that are not similar ; 
+ qu4:STACK;
+  // Stack for storing datas that are similar ; 
+ qu5:STACK;
+ //variable for storing length of the first set( data from the user);
+ longueur1:INTEGER;
+//variable for storing length of the seconde set( data from the user);
+ longueur2:INTEGER;
+ //variable for storing one of the first array's number( data from the user);
+ number1:INTEGER;
+ //variable for storing one of the  second array's number( data from the user);
+ number2:INTEGER;
+ //both are counter for decrement or increment ;
+ count:INTEGER;
+ i:INTEGER;
+//Variables for storing the sum of not similar datas ;
+ BEGIN
+WRITE('Write the length of the first array');
+   READ(longueur1);
+   longueur1:=qu1.length;
+WRITE('Write the length of the second array');
+   READ(longueur2);
+   longueur2:=qu2.length;
+// loop for completing the first array;
+count:=0;
+WHILE (count<longueur1) DO
+   READ(number1);
+   qu1.push(number1);
+   count:=count+1;
+END_WHILE
+// loop for completing the second array;
+count:=0;
+WHILE (count<longueur2) DO
+   READ(number2);
+   qu2.push(number2);
+   count:=count+1;
+END_WHILE
+//loop for browsing all values of the first array ;
+ qu3.length=longueur1;
+FOR (longuer1 FROM qu3.length to 0) DO
+//loop for browsing all values of the second array ;
+ i:=longueur2;
+WHILE(0<i) DO
+IF (qu1[i]=qu2[i]) THEN
+   qu4.push(qu2.pop());
+ELSE
+   qu5.push(qu2.pop());
+END_IF
+i:=i-1;
+END_WHILE
+qu3.push(qu1.pop());
+END_FOR 
+
+i:=0;
+WHILE (qu4[i]<0) DO
+   sum:=sum+(2*qu4[i]);
+   i:=i-1;
+END_WHILE
+
+END_WHILE
+   WRITE(sum);
+END
+
+
+
+/ Deuxieme maniere de faire la somme avec un hash table ;
+ALGORITHM calculSomme
+VAR
+ //variable for storing length of the first set( data from the user);
+ longueur1:INTEGER;
+//variable for storing length of the seconde set( data from the user);
+ longueur2:INTEGER;
+ longuer1:=0;
+ longuer2:=0;
+ //hash_table for storing our datas according repetition;
+ arrangement:HASH_TABLE<INTEGER,INTEGER>
+//array for arranging users' value (first array )
+ qu1:array of integer[longueur1] ;
+ //array for arranging users' value (second array )
+ qu2:array of integer[longueur2];
+ //both are counter for decrement or increment ;
+  count:INTEGER;
+  i:INTEGER;
+  sum:INTEGER;
+BEGIN
+WRITE('Write the length of the first array');
+   READ(longueur1);
+   longueur1:=qu1.length;
+WRITE('Write the length of the second array');
+   READ(longueur2);
+   longueur2:=qu2.length;
+
+ count:=0;
+WHILE (count<longueur1) DO
+   READ(number1);
+   qu1[i]=number1;
+   count:=count+1;
+END_WHILE
+// loop for completing the second array;
+ count:=0;
+WHILE (count<longueur2) DO
+   READ(number2);
+   qu2[i]=number2;
+   count:=count+1;
+END_WHILE
+
+//Loop for figuring out which data is repeated and which else it's not 
+count:0;
+FOR count TO qu1.length DO
+ arrangement.insert(qu1[count],1);
+END_FOR
+
+
+
+WHILE (count<qu2.length) DO
+IF(arrangement.lookup(qu2[count]=TRUE)) THEN 
+ i:=arrangement.get(qu2[count])+1;
+ arrangement.insert(qu2[count],i);
+ ELSE
+  arrangement.insert(qu2[count],1);
+
+  END_IF
+   END_WHILE
+
+WHILE (count<qu2.length) DO
+  IF (arrangement.lookup(qu1[i])=2) THEN
+ sum:= sum+(2*qu1[i]);
+ END_IF
+ END_WHILE
+
+  
+  WRITE(sum);
+END
